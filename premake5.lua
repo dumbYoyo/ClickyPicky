@@ -1,4 +1,4 @@
-workspace "ClickyPicky"
+workspace "FlappyBird"
     architecture "x64"
     
     configurations
@@ -9,8 +9,8 @@ workspace "ClickyPicky"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}}"
 
-project "ClickyPicky"
-    location "ClickyPicky"
+project "FlappyBird"
+    location "FlappyBird"
     kind "ConsoleApp"
     language "C++"
 
@@ -21,19 +21,22 @@ project "ClickyPicky"
     {
         "%{prj.name}/src/**.cpp",
         "%{prj.name}/src/**.h",
-        "%{prj.name}/libraries/glad/src/glad.c"
+        "%{prj.name}/libraries/glad/src/glad.c",
+        "%{prj.name}/libraries/stb/stb/stb_image.cpp"
     }
 
     includedirs
     {
-        "ClickyPicky/libraries/glm",
-        "ClickyPicky/libraries/glad/include",
-        "ClickyPicky/libraries/GLFW/include"
+        "FlappyBird/libraries/glm",
+        "FlappyBird/libraries/glad/include",
+        "FlappyBird/libraries/GLFW/include",
+        "FlappyBird/libraries/glm",
+        "FlappyBird/libraries/stb"
     }
 
     libdirs
     {
-        "ClickyPicky/libraries/GLFW/lib"
+        "FlappyBird/libraries/GLFW/lib"
     }
 
     links
