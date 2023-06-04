@@ -13,6 +13,7 @@ project "FlappyBird"
     location "FlappyBird"
     kind "ConsoleApp"
     language "C++"
+    cppdialect "C++17"
 
     targetdir ("bin/" .. outputdir .. "%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "%{prj.name}")
