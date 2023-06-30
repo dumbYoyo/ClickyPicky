@@ -3,6 +3,7 @@
 Shape::Shape(float vertices[], size_t verticesSize, int indices[], size_t indicesSize, float texCoords[], size_t texCoordsSize) :
 	m_vao(0), m_vbo(0), m_tbo(0), m_ibo(0), m_indicesSize(indicesSize)
 {
+	m_texCoordsSize = texCoordsSize;
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
 
@@ -14,7 +15,7 @@ Shape::Shape(float vertices[], size_t verticesSize, int indices[], size_t indice
 
 	glGenBuffers(1, &m_tbo);
 	glBindBuffer(GL_ARRAY_BUFFER, m_tbo);
-	glBufferData(GL_ARRAY_BUFFER, texCoordsSize, texCoords, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, texCoordsSize, texCoords, GL_DYNAMIC_DRAW);
 	glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, (void*)0);
 	glEnableVertexAttribArray(1);
 

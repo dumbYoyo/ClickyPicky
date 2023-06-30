@@ -14,6 +14,14 @@ MasterRenderer::~MasterRenderer()
 {
 	delete m_entityRenderer;
 	delete m_entityShader;
+	for (auto& kv : m_entities)
+	{
+		std::vector<Entity*>& batch = kv.second;
+		for (Entity* e : batch)
+		{
+			delete e;
+		}
+	}
 	m_entities.clear();
 }
 
@@ -33,16 +41,16 @@ void MasterRenderer::Render()
 void MasterRenderer::AddEntity(Entity* entity)
 {
 	std::shared_ptr<EntityData> entityData = entity->GetEntityData();
-	std::vector<Entity>* batch = nullptr;
+	std::vector<Entity*>* batch = nullptr;
 
-	auto itr = m_entities.find(*entityData);
+	auto& itr = m_entities.find(*entityData);
 	if (itr != m_entities.end())
 	{
 		batch = &itr->second;
 	}
 	else
 	{
-		std::vector<Entity> newBatch;
+		std::vector<Entity*> newBatch;
 		m_entities.emplace(*entityData, newBatch);
 		batch = &m_entities[*entityData];
 	}
@@ -53,5 +61,5 @@ void MasterRenderer::AddEntity(Entity* entity)
 		return;
 	}
 
-	batch->push_back(*entity);
+	batch->emplace_back(entity);
 }

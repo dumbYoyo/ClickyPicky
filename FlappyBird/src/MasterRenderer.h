@@ -13,5 +13,5 @@ public:
 private:
 	EntityRenderer* m_entityRenderer;
 	Shader* m_entityShader;
-	std::unordered_map<EntityData, std::vector<Entity>> m_entities;
+	std::unordered_map<EntityData, std::vector<Entity*>> m_entities;
 };

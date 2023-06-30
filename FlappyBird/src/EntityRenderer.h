@@ -33,8 +33,7 @@ class EntityRenderer
 {
 public:
 	EntityRenderer(Shader* shader);
-	~EntityRenderer();
-	void Render(std::unordered_map<EntityData, std::vector<Entity>>& entities);
+	void Render(std::unordered_map<EntityData, std::vector<Entity*>>& entities);
 private:
 	Shader* m_shader;
 };

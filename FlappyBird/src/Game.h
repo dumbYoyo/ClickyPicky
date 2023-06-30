@@ -1,9 +1,10 @@
 #pragma once
 
+#include <stb/stb_image.h>
 #include "Window.h"
 #include "Entity.h"
+#include "AnimatedEntity.h"
 #include "MasterRenderer.h"
-#include <stb/stb_image.h>
 
 class Game
 {
@@ -19,7 +20,7 @@ private:
 	void Update(float dt);
 	void Render();
 
-	Entity* m_player;
+	AnimatedEntity* m_player;
 	Entity* entitiy;
 	MasterRenderer* m_renderer;
 };
