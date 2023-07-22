@@ -1,5 +1,7 @@
 #include "AnimatedEntity.h"
 
+//TODO: the timer needs to be worked upon, it aint correct
+
 AnimatedEntity::AnimatedEntity(const std::string& texturePath, glm::vec3 position, float rotation, glm::vec2 scale, const AnimConfig& animConfig) :
 	Entity(texturePath, position, rotation, scale), m_currentFrameDelayIndex(1), m_elapsedTimeDelay(0), m_animConfig(animConfig), m_shouldLoop(true)
 {

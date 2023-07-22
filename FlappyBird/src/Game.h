@@ -21,6 +21,5 @@ private:
 	void Render();
 
 	AnimatedEntity* m_player;
-	Entity* entitiy;
 	MasterRenderer* m_renderer;
 };
