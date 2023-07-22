@@ -4,7 +4,7 @@ Game::Game()
 {
 	m_window = CreateWindow(1280, 720, "FlappyBird");
 
-	m_player = new AnimatedEntity("res/SpriteSheet.png", glm::vec3(500, 500, 0), 0, glm::vec2(200, 200), AnimConfig("res/config.cfg", 2, 1, 32, 32));
+	m_player = new AnimatedEntity("res/Frog.png", glm::vec3(500, 500, 0), 0, glm::vec2(200, 200), AnimConfig("res/config.cfg", 4, 3, 22, 20));
 	entitiy = new Entity("res/pic.png", glm::vec3(900, 500, 0), 0, glm::vec2(300, 300));
 
 	m_renderer = new MasterRenderer();
@@ -42,7 +42,7 @@ void Game::Run()
 
 	while (!glfwWindowShouldClose(m_window))
 	{
-		glClearColor(0, 0, 0, 1);
+		glClearColor(1, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		double now = glfwGetTime();

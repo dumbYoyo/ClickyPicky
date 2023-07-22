@@ -1,17 +1,20 @@
 #include "AnimatedEntity.h"
 
 AnimatedEntity::AnimatedEntity(const std::string& texturePath, glm::vec3 position, float rotation, glm::vec2 scale, const AnimConfig& animConfig) :
-	Entity(texturePath, position, rotation, scale), m_currentFrameDelayIndex(1), m_elapsedTimeDelay(0)
+	Entity(texturePath, position, rotation, scale), m_currentFrameDelayIndex(1), m_elapsedTimeDelay(0), m_animConfig(animConfig), m_shouldLoop(true)
 {
 	LoadAnimConfigFile(animConfig.m_animConfigFile);
 	m_currentFrameDelay = m_keyFrameDelaysMap.at(0);
 
+	// default tex coords
 	m_texCoords = new float[8] {
-		0.5f, 0, // top left
-		0.5f, 1.0f, // bottom left
-		1, 1.0f, // bottom right
-		1, 0 // top right
+		0, 0, // top left
+		0, animConfig.m_spriteHeight / animConfig.m_spriteSheetHeight, // bottom left
+		animConfig.m_spriteWidth / animConfig.m_spriteSheetWidth, animConfig.m_spriteHeight / animConfig.m_spriteSheetHeight, // bottom right
+		animConfig.m_spriteWidth / animConfig.m_spriteSheetWidth, 0 // top right
 	};
+	glBindBuffer(GL_ARRAY_BUFFER, GetEntityData()->GetShape()->GetTbo());
+	glBufferSubData(GL_ARRAY_BUFFER, 0, GetEntityData()->GetShape()->m_texCoordsSize, m_texCoords);
 }
 
 void AnimatedEntity::Render(Shader* shader)
@@ -65,6 +68,26 @@ void AnimatedEntity::PlayAnim()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, GetEntityData()->GetShape()->GetTbo());
 	glBufferSubData(GL_ARRAY_BUFFER, 0, GetEntityData()->GetShape()->m_texCoordsSize, m_texCoords);
+
+	for (int i = 0; i < 8; i++)
+	{
+		if (i % 2 == 0)
+			m_texCoords[i] += m_animConfig.m_spriteWidth / m_animConfig.m_spriteSheetWidth;
+	}
+
+	if (m_texCoords[6] >= 1)
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			if (i % 2 != 0) {
+				m_texCoords[i] += m_animConfig.m_spriteHeight / m_animConfig.m_spriteSheetHeight;
+			}
+		}
+		m_texCoords[0] = 0;
+		m_texCoords[2] = 0;
+		m_texCoords[4] = m_animConfig.m_spriteWidth / m_animConfig.m_spriteSheetWidth;
+		m_texCoords[6] = m_animConfig.m_spriteWidth / m_animConfig.m_spriteSheetWidth;
+	}
 }
 
 void AnimatedEntity::Update(float dt)
@@ -75,7 +98,8 @@ void AnimatedEntity::Update(float dt)
 		PlayAnim();
 		if (m_currentFrameDelayIndex <= m_keyFrameDelaysMap.size() - 1)
 			m_currentFrameDelay = m_keyFrameDelaysMap.at(m_currentFrameDelayIndex);
-		++m_currentFrameDelayIndex;
+		if (!m_shouldLoop)
+			++m_currentFrameDelayIndex;
 		m_elapsedTimeDelay = 0;
 	}
 }

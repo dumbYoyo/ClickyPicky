@@ -13,10 +13,13 @@ struct AnimConfig
 	std::string m_animConfigFile;
 	int m_numRows, m_numCols;
 	float m_spriteWidth, m_spriteHeight;
+	float m_spriteSheetWidth, m_spriteSheetHeight;
 
 	AnimConfig(const std::string& animConfigFile, int spriteSheetRows, int spriteSheetCols, float spriteWidth, float spriteHeight) :
 		m_animConfigFile(animConfigFile), m_numRows(spriteSheetRows), m_numCols(spriteSheetCols), m_spriteWidth(spriteWidth), m_spriteHeight(spriteHeight)
 	{
+		m_spriteSheetWidth = m_numRows * m_spriteWidth;
+		m_spriteSheetHeight = m_numCols * m_spriteHeight;
 	}
 };
 
@@ -29,11 +32,13 @@ public:
 	void Update(float dt);
 private:
 	std::unordered_map<int, float> m_keyFrameDelaysMap;
+	AnimConfig m_animConfig;
 
 	void LoadAnimConfigFile(const std::string& path);
 	float m_currentFrameDelay;
 	int m_currentFrameDelayIndex;
 	float m_elapsedTimeDelay;
+	bool m_shouldLoop;
 
 	float* m_texCoords;
 

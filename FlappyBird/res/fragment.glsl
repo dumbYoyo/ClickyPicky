@@ -6,7 +6,12 @@ in vec2 texCoords;
 
 uniform sampler2D tex_sampler;
 
+vec4 color;
+
 void main()
 {
-	fragColor = texture(tex_sampler, texCoords);
+	color = texture(tex_sampler, texCoords);
+	if (color.a < 0.1)
+		discard;
+	fragColor = color;
 }
