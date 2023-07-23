@@ -5,6 +5,11 @@ MasterRenderer::MasterRenderer()
 	m_entityShader = new Shader("res/vertex.glsl", "res/fragment.glsl");
 	m_entityRenderer = new EntityRenderer(m_entityShader);
 
+	CreateProjectionMatrix();
+}
+
+void MasterRenderer::CreateProjectionMatrix()
+{
 	glm::mat4 proj = glm::mat4(1.0f);
 	proj = glm::ortho(0.0f, 1280.0f, 0.0f, 720.0f, 0.1f, 100.0f);
 	m_entityShader->LoadMat4("proj", proj);

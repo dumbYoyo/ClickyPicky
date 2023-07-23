@@ -10,6 +10,7 @@ public:
 
 	void Render();
 	void AddEntity(Entity* entity);
+	void CreateProjectionMatrix();
 private:
 	EntityRenderer* m_entityRenderer;
 	Shader* m_entityShader;

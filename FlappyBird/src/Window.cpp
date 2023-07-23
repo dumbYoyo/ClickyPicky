@@ -21,3 +21,16 @@ GLFWwindow* CreateWindow(int width, int height, const char* title)
 
 	return window;
 }
+
+void WindowSizeCallback(GLFWwindow* window, int width, int height)
+{
+	glViewport(0, 0, width, height);
+	MasterRenderer* renderer = (MasterRenderer*)glfwGetWindowUserPointer(window);
+	renderer->CreateProjectionMatrix();
+}
+
+void SetupWindowCallbacks(MasterRenderer* renderer, GLFWwindow* window)
+{
+	glfwSetWindowUserPointer(window, renderer);
+	glfwSetWindowSizeCallback(window, WindowSizeCallback);
+}

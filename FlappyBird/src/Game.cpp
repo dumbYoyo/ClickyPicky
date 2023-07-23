@@ -4,9 +4,11 @@ Game::Game()
 {
 	m_window = CreateWindow(1280, 720, "FlappyBird");
 
-	m_player = new AnimatedEntity("res/Bird.png", glm::vec3(500, 500, 0), 0, glm::vec2(320, 110), AnimConfig("res/animConfig.cfg", 4, 1, 32, 11));
+	m_player = new AnimatedEntity("res/Bird.png", glm::vec3(500, 500, 0), 0, glm::vec2(320/1.5f, 110/1.5f), AnimConfig("res/animConfig.cfg", 4, 1, 32, 11));
 
 	m_renderer = new MasterRenderer();
+
+	SetupWindowCallbacks(m_renderer, m_window);
 }
 
 Game::~Game()
@@ -34,8 +36,10 @@ void Game::CleanUp()
 
 void Game::Run()
 {
-	gladLoadGL();
 	double previous = glfwGetTime();
+	double secsPerUpdate = 1.0 / 60.0;
+	double steps = 0.0;
+	glfwSwapInterval(1);
 
 	while (!glfwWindowShouldClose(m_window))
 	{
@@ -43,10 +47,15 @@ void Game::Run()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		double now = glfwGetTime();
-		double elapsed = now - previous;
+		double delta = now - previous;
 		previous = now;
+		steps += delta;
 
-		Update((float)elapsed);
+		while (steps >= secsPerUpdate) {
+			Update((float)delta);
+			steps -= secsPerUpdate;
+		}
+
 		Render();
 
 		glfwSwapBuffers(m_window);
