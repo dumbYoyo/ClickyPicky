@@ -14,9 +14,10 @@ struct AnimConfig
 	int m_numRows, m_numCols;
 	float m_spriteWidth, m_spriteHeight;
 	float m_spriteSheetWidth, m_spriteSheetHeight;
+	bool m_loop;
 
-	AnimConfig(const std::string& animConfigFile, int spriteSheetRows, int spriteSheetCols, float spriteWidth, float spriteHeight) :
-		m_animConfigFile(animConfigFile), m_numRows(spriteSheetRows), m_numCols(spriteSheetCols), m_spriteWidth(spriteWidth), m_spriteHeight(spriteHeight)
+	AnimConfig(const std::string& animConfigFile, int spriteSheetRows, int spriteSheetCols, float spriteWidth, float spriteHeight, bool loop) :
+		m_animConfigFile(animConfigFile), m_numRows(spriteSheetRows), m_numCols(spriteSheetCols), m_spriteWidth(spriteWidth), m_spriteHeight(spriteHeight), m_loop(loop)
 	{
 		m_spriteSheetWidth = m_numRows * m_spriteWidth;
 		m_spriteSheetHeight = m_numCols * m_spriteHeight;
@@ -38,7 +39,6 @@ private:
 	float m_currentFrameDelay;
 	int m_currentFrameDelayIndex;
 	float m_elapsedTimeDelay;
-	bool m_shouldLoop;
 
 	float* m_texCoords;
 

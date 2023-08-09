@@ -33,4 +33,9 @@ void SetupWindowCallbacks(MasterRenderer* renderer, GLFWwindow* window)
 {
 	glfwSetWindowUserPointer(window, renderer);
 	glfwSetWindowSizeCallback(window, WindowSizeCallback);
+
+	glfwSetKeyCallback(window, KeyListener::KeyCallback);
+	glfwSetMouseButtonCallback(window, MouseListener::MouseButtonCallback);
+	glfwSetCursorPosCallback(window, MouseListener::MousePosCallback);
+	glfwSetScrollCallback(window, MouseListener::MouseScrollCallback);
 }
