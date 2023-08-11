@@ -1,7 +1,7 @@
 #include "Game.h"
 
 Game::Game() :
-	m_acceleration(0, 0), m_velocity(0, 0), m_spawnPipesTime(3.f), m_spawnPipesElapsed(0.f)
+	m_acceleration(0, 0), m_velocity(0, 0), m_spawnPipesTime(3.f), m_spawnPipesElapsed(0.f), m_worldMoveSpeed(100.0f), m_flyingDisabled(false)
 {
 	m_window = CreateWindow(1280, 720, "FlappyBird");
 
@@ -27,7 +27,7 @@ void Game::Update(float dt)
 
 	m_player->Position.y += m_velocity.y;
 
-	if (KeyListener::GetKeyClicked(GLFW_KEY_SPACE))
+	if (KeyListener::GetKeyClicked(GLFW_KEY_SPACE) && !m_flyingDisabled)
 		m_velocity.y = 300 * dt;
 	else
 		m_velocity += m_acceleration * dt;
@@ -38,8 +38,8 @@ void Game::Update(float dt)
 		float x = RandomFloatStep(0, 1280, 100);
 		float y = RandomFloat(700, 900);
 		float y1 = RandomFloat(0, -170);
-		std::shared_ptr<Entity> pipe = std::make_unique<Entity>("res/Pipe.png", glm::vec3(1400, y, 0), 0, glm::vec2(170, 560));
-		std::shared_ptr<Entity> pipe2 = std::make_unique<Entity>("res/Pipe.png", glm::vec3(1400, y1, 0), 0, glm::vec2(170, -560));
+		std::shared_ptr<Entity> pipe = std::make_unique<Entity>("res/Pipe.png", glm::vec3(1400, y, 0), 0.f, glm::vec2(170, 560));
+		std::shared_ptr<Entity> pipe2 = std::make_unique<Entity>("res/Pipe.png", glm::vec3(1400, y1, 0), 0.f, glm::vec2(170, -560));
 		m_pipes.push_back(pipe);
 		m_pipes.push_back(pipe2);
 
@@ -48,7 +48,7 @@ void Game::Update(float dt)
 
 	for (auto& pipe : m_pipes)
 	{
-		pipe->Position.x -= 100 * dt;
+		pipe->Position.x -= m_worldMoveSpeed * dt;
 	}
 
 	auto itr = m_pipes.begin();
@@ -59,6 +59,8 @@ void Game::Update(float dt)
 		else
 			++itr;
 	}
+
+	CheckCollisions();
 }
 
 void Game::Render()
@@ -69,6 +71,19 @@ void Game::Render()
 	m_renderer->AddEntity(m_player);
 
 	m_renderer->Render();
+}
+
+void Game::CheckCollisions()
+{
+	for (auto& pipe : m_pipes)
+	{
+		if (m_player->CollidesWith(*pipe))
+		{
+			m_worldMoveSpeed = 0;
+			m_flyingDisabled = true;
+			m_player->ResetAnim();
+		}
+	}
 }
 
 float Game::RandomFloat(float min, float max)

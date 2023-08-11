@@ -16,6 +16,8 @@ public:
 
 	std::shared_ptr<EntityData> GetEntityData() { return m_entityData; }
 	virtual void Render(Shader* shader);
+
+	bool CollidesWith(const Entity& other);
 private:
 	std::shared_ptr<EntityData> m_entityData;
 };

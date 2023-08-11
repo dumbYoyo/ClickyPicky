@@ -13,7 +13,7 @@ Entity::Entity() :
 }
 
 /// <summary>
-/// Only to be called by the entityRenderer, not by the user, usually.
+/// Setups up and sends all the stuff to the gpu
 /// </summary>
 void Entity::Render(Shader* shader)
 {
@@ -28,4 +28,14 @@ void Entity::Render(Shader* shader)
 	shader->LoadInt("time", 0);
 
 	glDrawElements(GL_TRIANGLES, m_entityData->GetShape()->GetNumVertices(), GL_UNSIGNED_INT, 0);
+}
+
+bool Entity::CollidesWith(const Entity& other)
+{
+	if (std::fabs(Position.x - other.Position.x) < Scale.x / 2.f + other.Scale.x / 2.f) {
+		if (std::fabs(Position.y - other.Position.y) < Scale.y / 2.f + other.Scale.y / 2.f) {
+			return true;
+		}
+	}
+	return false;
 }

@@ -19,8 +19,8 @@ private:
 	void CleanUp();
 	void Update(float dt);
 	void Render();
-	float RandomFloat(float from, float to);
-	float RandomFloatStep(float from, float to, float step);
+
+	void CheckCollisions();
 
 	AnimatedEntity* m_player;
 	glm::vec2 m_velocity, m_acceleration;
@@ -30,5 +30,11 @@ private:
 	float m_spawnPipesElapsed;
 	float m_spawnPipesTime;
 
+	float m_worldMoveSpeed;
+	bool m_flyingDisabled;
+
 	MasterRenderer* m_renderer;
+
+	float RandomFloat(float from, float to);
+	float RandomFloatStep(float from, float to, float step);
 };

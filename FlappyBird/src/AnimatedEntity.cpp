@@ -1,7 +1,7 @@
 #include "AnimatedEntity.h"
 
 AnimatedEntity::AnimatedEntity(const std::string& texturePath, glm::vec3 position, float rotation, glm::vec2 scale, const AnimConfig& animConfig) :
-	Entity(texturePath, position, rotation, scale), m_currentFrameDelayIndex(1), m_elapsedTimeDelay(0), m_animConfig(animConfig)
+	Entity(texturePath, position, rotation, scale), m_currentFrameDelayIndex(1), m_elapsedTimeDelay(0), m_animConfig(animConfig), m_animDisabled(false)
 {
 	LoadAnimConfigFile(animConfig.m_animConfigFile);
 	m_currentFrameDelay = m_keyFrameDelaysMap.at(0);
@@ -93,7 +93,7 @@ void AnimatedEntity::PlayAnim()
 void AnimatedEntity::Update(float dt)
 {
 	m_elapsedTimeDelay += dt;
-	if (m_elapsedTimeDelay >= m_currentFrameDelay && m_currentFrameDelayIndex <= m_keyFrameDelaysMap.size())
+	if (m_elapsedTimeDelay >= m_currentFrameDelay && m_currentFrameDelayIndex <= m_keyFrameDelaysMap.size() && !m_animDisabled)
 	{
 		PlayAnim();
 		if (m_currentFrameDelayIndex <= m_keyFrameDelaysMap.size() - 1)
@@ -102,4 +102,19 @@ void AnimatedEntity::Update(float dt)
 			++m_currentFrameDelayIndex;
 		m_elapsedTimeDelay = 0;
 	}
+}
+
+void AnimatedEntity::ResetAnim()
+{
+	m_animDisabled = true;
+	m_texCoords[0] = 0;
+	m_texCoords[1] = 0;
+	m_texCoords[2] = 0;
+	m_texCoords[3] = m_animConfig.m_spriteHeight / m_animConfig.m_spriteSheetHeight;
+	m_texCoords[4] = m_animConfig.m_spriteWidth / m_animConfig.m_spriteSheetWidth;
+	m_texCoords[5] = m_animConfig.m_spriteHeight / m_animConfig.m_spriteSheetHeight;
+	m_texCoords[6] = m_animConfig.m_spriteWidth / m_animConfig.m_spriteSheetWidth;
+	m_texCoords[7] = 0;
+	glBindBuffer(GL_ARRAY_BUFFER, GetEntityData()->GetShape()->GetTbo());
+	glBufferSubData(GL_ARRAY_BUFFER, 0, GetEntityData()->GetShape()->m_texCoordsSize, m_texCoords);
 }

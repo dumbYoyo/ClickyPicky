@@ -31,6 +31,7 @@ public:
 	~AnimatedEntity();
 	void Render(Shader* shader) override;
 	void Update(float dt);
+	void ResetAnim();
 private:
 	std::unordered_map<int, float> m_keyFrameDelaysMap;
 	AnimConfig m_animConfig;
@@ -39,6 +40,7 @@ private:
 	float m_currentFrameDelay;
 	int m_currentFrameDelayIndex;
 	float m_elapsedTimeDelay;
+	bool m_animDisabled;
 
 	float* m_texCoords;
 
