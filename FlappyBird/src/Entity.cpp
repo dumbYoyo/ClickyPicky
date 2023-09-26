@@ -32,8 +32,8 @@ void Entity::Render(Shader* shader)
 
 bool Entity::CollidesWith(const Entity& other)
 {
-	if (std::fabs(Position.x - other.Position.x) < Scale.x / 2.f + other.Scale.x / 2.f) {
-		if (std::fabs(Position.y - other.Position.y) < Scale.y / 2.f + other.Scale.y / 2.f) {
+	if (std::fabs(Position.x - other.Position.x) < std::fabs(Scale.x / 2.f) + std::fabs(other.Scale.x / 2.f)) {
+		if (std::fabs(Position.y - other.Position.y) < std::fabs(Scale.y / 2.f) + std::fabs(other.Scale.y / 2.f)) {
 			return true;
 		}
 	}

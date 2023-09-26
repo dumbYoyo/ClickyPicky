@@ -1,24 +1,27 @@
 #pragma once
 
 #include <stb/stb_image.h>
-#include "Window.h"
+#include "Scene.h"
 #include "AnimatedEntity.h"
 #include "MasterRenderer.h"
 #include <vector>
+#include <irrKlang/irrKlang.h>
 
-class Game
+class Game : public Scene
 {
 public:
-	Game();
+	Game(const Game& obj) = delete;
 	~Game();
 
-	void Run();
+	void Enter() override;
+	static Game* Get();
+	void Exit() override;
 private:
-	GLFWwindow* m_window;
+	Game() {  }
 
-	void CleanUp();
-	void Update(float dt);
-	void Render();
+	void Update(float dt) override;
+	void Render() override;
+	void CleanUp() override;
 
 	void CheckCollisions();
 
@@ -34,6 +37,9 @@ private:
 	bool m_flyingDisabled;
 
 	MasterRenderer* m_renderer;
+	irrklang::ISoundEngine* m_soundEngine;
+
+	static Game* s_instance;
 
 	float RandomFloat(float from, float to);
 	float RandomFloatStep(float from, float to, float step);

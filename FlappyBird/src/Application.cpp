@@ -1,8 +1,8 @@
-#include "Game.h"
+#include "SceneManager.h"
 
 int main()
 {
-	Game* game = new Game();
-	game->Run();
-	delete game;
+	SceneManager* sceneMgr = new SceneManager();
+	sceneMgr->Run();
+	delete sceneMgr;
 }

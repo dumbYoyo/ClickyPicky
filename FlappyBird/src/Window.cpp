@@ -1,5 +1,7 @@
 #include "Window.h"
 
+GLFWwindow* window = NULL;
+
 GLFWwindow* CreateWindow(int width, int height, const char* title)
 {
 	if (!glfwInit())
@@ -8,7 +10,7 @@ GLFWwindow* CreateWindow(int width, int height, const char* title)
 		return nullptr;
 	}
 
-	GLFWwindow* window = glfwCreateWindow(1280, 720, "ClickyPicky", NULL, NULL);
+	window = glfwCreateWindow(1280, 720, "ClickyPicky", NULL, NULL);
 	if (!window)
 	{
 		std::cout << "Failed to create window\n";
@@ -29,7 +31,7 @@ void WindowSizeCallback(GLFWwindow* window, int width, int height)
 	renderer->CreateProjectionMatrix();
 }
 
-void SetupWindowCallbacks(MasterRenderer* renderer, GLFWwindow* window)
+void SetupWindowCallbacks(MasterRenderer* renderer)
 {
 	glfwSetWindowUserPointer(window, renderer);
 	glfwSetWindowSizeCallback(window, WindowSizeCallback);

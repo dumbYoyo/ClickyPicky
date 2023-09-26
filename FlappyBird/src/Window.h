@@ -8,5 +8,5 @@
 #include "KeyListener.h"
 
 GLFWwindow* CreateWindow(int width, int height, const char* title);
-void SetupWindowCallbacks(MasterRenderer* renderer, GLFWwindow* window);
+void SetupWindowCallbacks(MasterRenderer* renderer);
 void WindowSizeCallback(GLFWwindow* window, int width, int height);

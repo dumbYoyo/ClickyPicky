@@ -1,16 +1,25 @@
 #include "Game.h"
+#include "SceneManager.h"
 
-Game::Game() :
-	m_acceleration(0, 0), m_velocity(0, 0), m_spawnPipesTime(3.f), m_spawnPipesElapsed(0.f), m_worldMoveSpeed(100.0f), m_flyingDisabled(false)
+void Game::Enter()
 {
-	m_window = CreateWindow(1280, 720, "FlappyBird");
+	this->m_acceleration = glm::vec2(0, 0);
+	this->m_velocity = glm::vec2(0, 0);
+	this->m_spawnPipesTime = 3.f;
+	this->m_spawnPipesElapsed = 0.f;
+	this->m_worldMoveSpeed = 100.f;
+	this->m_flyingDisabled = false;
 
-	m_player = new AnimatedEntity("res/Bird.png", glm::vec3(500, 500, 0), 0, glm::vec2(320/1.5f, 110/1.5f), AnimConfig("res/animConfig.cfg", 4, 1, 32, 11, true));
+	m_player = new AnimatedEntity("res/Bird.png", glm::vec3(500, 500, 0), 0, glm::vec2(320 / 1.5f, 110 / 1.5f), AnimConfig("res/animConfig.cfg", 4, 1, 32, 11, true));
 	m_background = new Entity("res/Background.png", glm::vec3(640, 360, 0), 0, glm::vec2(1280, 720));
 
 	m_renderer = new MasterRenderer();
+	m_soundEngine = irrklang::createIrrKlangDevice(irrklang::ESOD_AUTO_DETECT,
+		irrklang::ESEO_MULTI_THREADED | irrklang::ESEO_LOAD_PLUGINS | irrklang::ESEO_USE_3D_BUFFERS);
 
-	SetupWindowCallbacks(m_renderer, m_window);
+	SetupWindowCallbacks(m_renderer);
+
+	m_soundEngine->play2D("res/heroes.mp3", true);
 }
 
 Game::~Game()
@@ -18,10 +27,24 @@ Game::~Game()
 	CleanUp();
 }
 
+Game* Game::Get()
+{
+	if (s_instance != NULL)
+	{
+		return s_instance;
+	}
+	else
+	{
+		s_instance = new Game();
+		return s_instance;
+	}
+}
+
 // ladies and gentlemen, get ready to see some magic numbers down ahead
 void Game::Update(float dt)
 {
 	m_player->Update(dt);
+	m_worldMoveSpeed += dt;
 
 	m_acceleration.y = -10.8f;
 
@@ -33,7 +56,7 @@ void Game::Update(float dt)
 		m_velocity += m_acceleration * dt;
 
 	m_spawnPipesElapsed += dt;
-	if (m_spawnPipesElapsed >= m_spawnPipesTime)
+	if (m_spawnPipesElapsed >= m_spawnPipesTime && !m_flyingDisabled)
 	{
 		float x = RandomFloatStep(0, 1280, 100);
 		float y = RandomFloat(700, 900);
@@ -73,6 +96,11 @@ void Game::Render()
 	m_renderer->Render();
 }
 
+void Game::Exit()
+{
+	CleanUp();
+}
+
 void Game::CheckCollisions()
 {
 	for (auto& pipe : m_pipes)
@@ -103,38 +131,6 @@ void Game::CleanUp()
 	delete m_renderer;
 	delete m_player;
 	delete m_background;
-}
-
-void Game::Run()
-{
-	double previous = glfwGetTime();
-	double secsPerUpdate = 1.0 / 60.0;
-	double steps = 0.0;
-	glfwSwapInterval(1);
-
-	while (!glfwWindowShouldClose(m_window))
-	{
-		glClearColor(50.f/255.f, 45.f/255.f, 50.f/255.f, 1);
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		double now = glfwGetTime();
-		double delta = now - previous;
-		previous = now;
-		steps += delta;
-
-		while (steps >= secsPerUpdate) {
-			Update((float)delta);
-			steps -= secsPerUpdate;
-		}
-
-		Render();
-
-		KeyListener::EndFrame();
-		MouseListener::EndFrame();
-
-		glfwSwapBuffers(m_window);
-		glfwPollEvents();
-	}
-
-	glfwTerminate();
+	m_soundEngine->drop(); // drop() closes or deletes it
+	m_pipes.clear();
 }
