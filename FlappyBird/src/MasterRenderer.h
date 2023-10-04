@@ -1,6 +1,7 @@
 #pragma once
 
 #include "EntityRenderer.h"
+#include "ResourceManager.h"
 
 class MasterRenderer
 {

@@ -4,20 +4,21 @@
 #include "Scene.h"
 #include "AnimatedEntity.h"
 #include "MasterRenderer.h"
+#include "MainMenuScene.h"
 #include <vector>
 #include <irrKlang/irrKlang.h>
 
-class Game : public Scene
+class GameScene : public Scene
 {
 public:
-	Game(const Game& obj) = delete;
-	~Game();
+	GameScene(const GameScene& obj) = delete;
+	~GameScene();
 
 	void Enter() override;
-	static Game* Get();
+	static GameScene* Get();
 	void Exit() override;
 private:
-	Game() {  }
+	GameScene() {  }
 
 	void Update(float dt) override;
 	void Render() override;
@@ -39,7 +40,7 @@ private:
 	MasterRenderer* m_renderer;
 	irrklang::ISoundEngine* m_soundEngine;
 
-	static Game* s_instance;
+	static GameScene* s_instance;
 
 	float RandomFloat(float from, float to);
 	float RandomFloatStep(float from, float to, float step);

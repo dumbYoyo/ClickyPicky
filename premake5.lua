@@ -28,22 +28,25 @@ project "FlappyBird"
 
     includedirs
     {
-        "FlappyBird/libraries/glm",
-        "FlappyBird/libraries/glad/include",
-        "FlappyBird/libraries/GLFW/include",
-        "FlappyBird/libraries/glm",
-        "FlappyBird/libraries/stb"
+        "%{prj.name}/libraries/glm",
+        "%{prj.name}/libraries/glad/include",
+        "%{prj.name}/libraries/GLFW/include",
+        "%{prj.name}/libraries/glm",
+        "%{prj.name}/libraries/stb",
+        "%{prj.name}/libraries/irrklang/include"
     }
 
     libdirs
     {
-        "FlappyBird/libraries/GLFW/lib"
+        "%{prj.name}/libraries/GLFW/lib",
+        "%{prj.name}/libraries/irrklang/lib"
     }
 
     links
     {
         "glfw3",
-        "opengl32"
+        "opengl32",
+        "irrKlang"
     }
 
     filter "configurations:Debug"

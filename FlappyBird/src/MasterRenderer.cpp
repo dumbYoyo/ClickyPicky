@@ -2,7 +2,7 @@
 
 MasterRenderer::MasterRenderer()
 {
-	m_entityShader = new Shader("res/vertex.glsl", "res/fragment.glsl");
+	m_entityShader = ResourceManager::GetShader("EntityShader");
 	m_entityRenderer = new EntityRenderer(m_entityShader);
 
 	CreateProjectionMatrix();
@@ -18,7 +18,6 @@ void MasterRenderer::CreateProjectionMatrix()
 MasterRenderer::~MasterRenderer()
 {
 	delete m_entityRenderer;
-	delete m_entityShader;
 	for (auto& kv : m_entities)
 	{
 		std::vector<Entity*>& batch = kv.second;

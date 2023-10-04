@@ -3,6 +3,7 @@
 #include "Shape.h"
 #include "Texture.h"
 #include <memory>
+#include "ResourceManager.h"
 
 class EntityData
 {

@@ -21,6 +21,8 @@ GLFWwindow* CreateWindow(int width, int height, const char* title)
 	glfwMakeContextCurrent(window);
 	gladLoadGL();
 
+	glfwSwapInterval(1);
+
 	return window;
 }
 
@@ -31,13 +33,22 @@ void WindowSizeCallback(GLFWwindow* window, int width, int height)
 	renderer->CreateProjectionMatrix();
 }
 
-void SetupWindowCallbacks(MasterRenderer* renderer)
+void OnWindowPosChanged(GLFWwindow* window, int xpos, int ypos)
+{
+	Manager* mgr = (Manager*)glfwGetMonitorUserPointer(glfwGetPrimaryMonitor());
+	//mgr->TriggerUpdatePaused();
+}
+
+void SetupWindowCallbacks(MasterRenderer* renderer, Manager* mgr)
 {
 	glfwSetWindowUserPointer(window, renderer);
+	glfwSetMonitorUserPointer(glfwGetPrimaryMonitor(), mgr);
 	glfwSetWindowSizeCallback(window, WindowSizeCallback);
 
 	glfwSetKeyCallback(window, KeyListener::KeyCallback);
 	glfwSetMouseButtonCallback(window, MouseListener::MouseButtonCallback);
 	glfwSetCursorPosCallback(window, MouseListener::MousePosCallback);
 	glfwSetScrollCallback(window, MouseListener::MouseScrollCallback);
+
+	glfwSetWindowPosCallback(window, OnWindowPosChanged);
 }

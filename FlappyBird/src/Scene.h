@@ -1,8 +1,7 @@
 #pragma once
 
 #include "Window.h"
-
-class SceneManager;
+#include "Manager.h"
 
 class Scene
 {
@@ -15,4 +14,8 @@ public:
 	virtual void Render() = 0;
 	virtual void Update(float dt) = 0;
 	virtual void CleanUp() = 0;
+
+	void SetManager(Manager* mgr);
+protected:
+	Manager* m_mgr;
 };

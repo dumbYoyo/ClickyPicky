@@ -7,7 +7,7 @@
 class Entity
 {
 public:
-	Entity(const std::string& texturePath, glm::vec3 position, float rotation, glm::vec2 scale);
+	Entity(const std::string& texName, glm::vec3 position, float rotation, glm::vec2 scale);
 	Entity();
 
 	float Rotation;

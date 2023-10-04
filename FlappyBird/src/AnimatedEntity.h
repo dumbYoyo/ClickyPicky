@@ -27,7 +27,7 @@ struct AnimConfig
 class AnimatedEntity : public Entity
 {
 public:
-	AnimatedEntity(const std::string& texturePath, glm::vec3 position, float rotation, glm::vec2 scale, const AnimConfig& animConfig);
+	AnimatedEntity(const std::string& texName, glm::vec3 position, float rotation, glm::vec2 scale, const AnimConfig& animConfig);
 	~AnimatedEntity();
 	void Render(Shader* shader) override;
 	void Update(float dt);

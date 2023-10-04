@@ -28,6 +28,6 @@ EntityData::EntityData(const std::string& texturePath)
 	}
 	else
 	{
-		m_texture = std::make_shared<Texture>(texturePath);
+		m_texture = ResourceManager::GetTexture(texturePath);
 	}
 }
