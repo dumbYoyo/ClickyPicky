@@ -8,8 +8,10 @@ void GameScene::Enter()
 	m_spawnPipesElapsed = 0.f;
 	m_worldMoveSpeed = 100.f;
 	m_flyingDisabled = false;
+	m_paused = false;
 
 	m_player = new AnimatedEntity("BirdTex", glm::vec3(500, 500, 0), 0, glm::vec2(320 / 1.5f, 110 / 1.5f), AnimConfig("res/animConfig.cfg", 4, 1, 32, 11, true));
+	m_player->SetBoundingBox(320.f / 1.5f - 50.f, 110 / 1.5f);
 	m_background = new Entity("BackgroundTex", glm::vec3(640, 360, 0), 0, glm::vec2(1280, 720));
 
 	m_renderer = new MasterRenderer();
@@ -41,8 +43,20 @@ GameScene* GameScene::Get()
 // ladies and gentlemen, get ready to see some magic numbers down ahead
 void GameScene::Update(float dt)
 {
+	if (KeyListener::GetKeyClicked(GLFW_KEY_TAB))
+		m_mgr->SetNextScene(GameScene::Get());
+	if (KeyListener::GetKeyClicked(GLFW_KEY_Q))
+		m_mgr->SetNextScene(MainMenuScene::Get());
+	if (KeyListener::GetKeyClicked(GLFW_KEY_ESCAPE))
+		m_paused = !m_paused;
+
+	if (m_paused)
+		return;
+
 	m_player->Update(dt);
 	m_worldMoveSpeed += dt;
+	if (m_spawnPipesTime >= 0.6f)
+		m_spawnPipesTime -= dt * dt;
 
 	m_player->Position.y += m_velocity.y * dt;
 
@@ -80,11 +94,6 @@ void GameScene::Update(float dt)
 	}
 
 	CheckCollisions();
-
-	if (KeyListener::GetKeyClicked(GLFW_KEY_TAB))
-		m_mgr->SetNextScene(GameScene::Get());
-	if (KeyListener::GetKeyClicked(GLFW_KEY_Q))
-		m_mgr->SetNextScene(MainMenuScene::Get());
 }
 
 void GameScene::Render()

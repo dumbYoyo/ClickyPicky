@@ -4,12 +4,14 @@ Entity::Entity(const std::string& texturePath, glm::vec3 position, float rotatio
 	Position(position), Rotation(rotation), Scale(scale)
 {
 	m_entityData = std::make_shared<EntityData>(texturePath);
+	m_boundingBox = scale;
 }
 
 Entity::Entity() :
 	Position(glm::vec3(0, 0, 0)), Rotation(0.0f), Scale(glm::vec2(100, 100))
 {
 	m_entityData = std::make_shared<EntityData>("");
+	m_boundingBox = Scale;
 }
 
 /// <summary>
@@ -30,10 +32,15 @@ void Entity::Render(Shader* shader)
 	glDrawElements(GL_TRIANGLES, m_entityData->GetShape()->GetNumVertices(), GL_UNSIGNED_INT, 0);
 }
 
+void Entity::SetBoundingBox(float sizeX, float sizeY)
+{
+	m_boundingBox = glm::vec2(sizeX, sizeY);
+}
+
 bool Entity::CollidesWith(const Entity& other)
 {
-	if (std::fabs(Position.x - other.Position.x) < std::fabs(Scale.x / 2.f) + std::fabs(other.Scale.x / 2.f)) {
-		if (std::fabs(Position.y - other.Position.y) < std::fabs(Scale.y / 2.f) + std::fabs(other.Scale.y / 2.f)) {
+	if (std::fabs(Position.x - other.Position.x) < std::fabs(m_boundingBox.x / 2.f) + std::fabs(other.m_boundingBox.x / 2.f)) {
+		if (std::fabs(Position.y - other.Position.y) < std::fabs(m_boundingBox.y / 2.f) + std::fabs(other.m_boundingBox.y / 2.f)) {
 			return true;
 		}
 	}

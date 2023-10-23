@@ -44,4 +44,6 @@ private:
 
 	float RandomFloat(float from, float to);
 	float RandomFloatStep(float from, float to, float step);
+
+	bool m_paused;
 };

@@ -17,7 +17,11 @@ public:
 	std::shared_ptr<EntityData> GetEntityData() { return m_entityData; }
 	virtual void Render(Shader* shader);
 
+	void SetBoundingBox(float sizeX, float sizeY);
+
 	bool CollidesWith(const Entity& other);
 private:
 	std::shared_ptr<EntityData> m_entityData;
+
+	glm::vec2 m_boundingBox;
 };

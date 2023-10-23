@@ -1,6 +1,6 @@
 #include "Manager.h"
 
-// TODO: fix the deltatime piling up when the window is dragged around
+// TODO: art
 // TODO: do smth so that we can pause the game
 
 int main()
